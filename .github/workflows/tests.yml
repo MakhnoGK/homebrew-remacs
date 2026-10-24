@@ -17,14 +17,11 @@ jobs:
   test-bot:
     strategy:
       matrix:
-        os: [ macos-26 ]
-        include:
-          - os: ubuntu-latest
-            container:
-              image: ghcr.io/homebrew/brew:main
-              options: --privileged
+        # Apple Silicon only; a bottle built on the oldest macOS remacs runs on (14) is
+        # used on every later one.
+        os: [ macos-14 ]
     runs-on: ${{ matrix.os }}
-    container: ${{ fromJSON(toJSON(matrix.container)) }} # zizmor: ignore[unpinned-images]
+    timeout-minutes: 90
     permissions:
       actions: read
       checks: read

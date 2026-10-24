@@ -1,18 +1,19 @@
-# Makhnogk Remacs
+# Homebrew tap for remacs
 
-## How do I install these formulae?
+[remacs](https://github.com/MakhnoGK/remacs), an Emacs-inspired IDE for macOS 14+ on
+Apple Silicon:
 
-`brew install makhnogk/remacs/<formula>`
-
-Or `brew tap makhnogk/remacs` and then `brew install <formula>`.
-
-Or, in a `brew bundle` `Brewfile`:
-
-```ruby
-tap "makhnogk/remacs"
-brew "<formula>"
+```sh
+brew install makhnogk/remacs/remacs
 ```
 
-## Documentation
+`remacs [path]` starts it; `brew info remacs` says how to add it to Launchpad.
+`brew install --HEAD makhnogk/remacs/remacs` builds the `dev` branch instead of the latest
+release (needs Xcode).
 
-`brew help`, `man brew` or check [Homebrew's documentation](https://docs.brew.sh).
+## Publishing a release
+
+1. `brew bump-formula-pr --url <the tag's tar.gz> makhnogk/remacs/remacs` opens a pull
+   request; CI builds the bottle.
+2. When it is green, run the `brew pr-pull` workflow with the pull request's number: it
+   uploads the bottle to this repository's releases and pushes the bottle block to `main`.
