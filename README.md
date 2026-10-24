@@ -1,7 +1,7 @@
 # Homebrew tap for remacs
 
-[remacs](https://github.com/MakhnoGK/remacs), an Emacs-inspired IDE for macOS 14+ on
-Apple Silicon:
+[remacs](https://github.com/MakhnoGK/remacs), an Emacs-inspired IDE, for macOS 15+ on
+Apple Silicon (on macOS 14, build it from source as its README says):
 
 ```sh
 brew install makhnogk/remacs/remacs
