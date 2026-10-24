@@ -1,0 +1,36 @@
+name: auto-publish
+
+# remacs's release workflow opens `bump-remacs-<version>` pull requests here. Once test-bot
+# has built the bottle on one, this runs `brew pr-pull` for it, which publishes the bottle
+# and pushes the formula to main.
+on:
+  workflow_run:
+    workflows: [brew test-bot]
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  pr-pull:
+    if: >-
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      startsWith(github.event.workflow_run.head_branch, 'bump-remacs-') &&
+      github.event.workflow_run.actor.login == 'MakhnoGK'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      pull-requests: read
+    steps:
+      - name: Run brew pr-pull
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          pull_request=$(gh pr list -R "$GITHUB_REPOSITORY" --head "$BRANCH" --state open \
+            --json number,headRefOid --jq ".[] | select(.headRefOid == \"$HEAD_SHA\") | .number")
+          [ -n "$pull_request" ] || { echo "::error::no open pull request at $HEAD_SHA"; exit 1; }
+          gh workflow run publish.yml -R "$GITHUB_REPOSITORY" \
+            -f pull_request="$pull_request" -f head_sha="$HEAD_SHA"
