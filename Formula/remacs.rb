@@ -12,6 +12,11 @@ class Remacs < Formula
     regex(/^v?(\d+(?:\.\d+)+(?:-(?:alpha|beta|rc)\.\d+)?)$/i)
   end
 
+  bottle do
+    root_url "https://github.com/MakhnoGK/homebrew-remacs/releases/download/remacs-0.1.0-alpha.1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dc254d041f0ff314aa1013b4c31d0890761870e9da6cfbf362be33a494540e8a"
+  end
+
   depends_on "cargo-about" => :build
   depends_on "cmake" => :build
   depends_on "rust" => :build
