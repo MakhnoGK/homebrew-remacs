@@ -17,9 +17,9 @@ jobs:
   test-bot:
     strategy:
       matrix:
-        # Apple Silicon only; a bottle built on the oldest macOS remacs runs on (14) is
-        # used on every later one.
-        os: [ macos-14 ]
+        # Apple Silicon only; a bottle built on the oldest macOS Homebrew still bottles
+        # rust for (15) is used on every later one.
+        os: [ macos-15 ]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 90
     permissions:
