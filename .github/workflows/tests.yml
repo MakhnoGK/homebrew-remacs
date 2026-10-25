@@ -18,8 +18,8 @@ jobs:
     strategy:
       matrix:
         # Apple Silicon only; a bottle built on the oldest macOS Homebrew still bottles
-        # rust for (15) is used on every later one.
-        os: [ macos-15 ]
+        # rust for (15) is used on every later one. Linux on x86_64, as remacs's archive.
+        os: [ macos-15, ubuntu-22.04 ]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 90
     permissions:
