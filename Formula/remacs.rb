@@ -1,5 +1,5 @@
 class Remacs < Formula
-  desc "Emacs-inspired IDE for macOS, written in Rust"
+  desc "Emacs-inspired IDE, written in Rust"
   homepage "https://github.com/MakhnoGK/remacs"
   url "https://github.com/MakhnoGK/remacs/archive/refs/tags/v0.1.0-alpha.1.tar.gz"
   sha256 "9b9b66e56b75cacb2ba3766525321bd29f4ce2ac72345fdac9aa256607dc0bc2"
@@ -20,11 +20,21 @@ class Remacs < Formula
   depends_on "cargo-about" => :build
   depends_on "cmake" => :build
   depends_on "rust" => :build
-  # gpui compiles its Metal shaders at build time.
-  depends_on xcode: :build
-  depends_on arch: :arm64
-  # remacs runs on 14, but Homebrew no longer bottles rust there.
-  depends_on macos: :sequoia
+
+  on_macos do
+    # gpui compiles its Metal shaders at build time.
+    depends_on xcode: :build
+    depends_on arch: :arm64
+    # remacs runs on 14, but Homebrew no longer bottles rust there.
+    depends_on macos: :sequoia
+  end
+
+  # Wayland, Vulkan and fontconfig are the desktop's, loaded when remacs starts.
+  on_linux do
+    depends_on "pkgconf" => :build
+    depends_on "libxcb"
+    depends_on "libxkbcommon"
+  end
 
   def install
     # A source archive has no git history to read the version from.
@@ -35,8 +45,19 @@ class Remacs < Formula
     # The license notices read every crate in the lock file offline, not only those built.
     system "cargo", "fetch", "--locked"
     system "cargo", "xtask", "bundle"
-    prefix.install "target/bundle/Remacs.app"
 
+    if OS.linux?
+      # Laid out as a prefix: bin/remacs, lib/remacs, the menu entry and icons in share.
+      bundle = Pathname.glob("target/bundle/remacs-*-linux").first
+      rm bundle/"install.sh"
+      # The desktop's session may not have Homebrew's bin on its PATH.
+      inreplace bundle/"share/applications/io.github.makhnogk.remacs.desktop",
+                /^Exec=remacs /, "Exec=#{opt_lib}/remacs/remacs "
+      prefix.install bundle.children
+      return
+    end
+
+    prefix.install "target/bundle/Remacs.app"
     # Detached from the terminal, so closing its tab does not quit remacs.
     binary = opt_prefix/"Remacs.app/Contents/MacOS/remacs"
     (bin/"remacs").write <<~SH
@@ -47,6 +68,16 @@ class Remacs < Formula
   end
 
   def caveats
+    if OS.linux?
+      return <<~EOS
+        `remacs [path]` starts it from a terminal. To have Remacs in the applications menu,
+        add Homebrew's share to your session's XDG_DATA_DIRS and log in again:
+          mkdir -p ~/.config/environment.d
+          echo 'XDG_DATA_DIRS=#{HOMEBREW_PREFIX}/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}' \\
+            > ~/.config/environment.d/homebrew-share.conf
+      EOS
+    end
+
     <<~EOS
       `remacs [path]` starts it from a terminal. To have Remacs in Launchpad and Spotlight:
         osascript -e 'tell application "Finder" to make alias file to posix file "#{opt_prefix}/Remacs.app" at posix file "/Applications" with properties {name:"Remacs.app"}'
@@ -54,6 +85,7 @@ class Remacs < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/remacs --version")
+    # A head build names itself by `git describe`, not by Homebrew's HEAD-<commit>.
+    assert_match version.head? ? "remacs" : version.to_s, shell_output("#{bin}/remacs --version")
   end
 end
