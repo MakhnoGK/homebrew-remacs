@@ -5,11 +5,15 @@ Apple Silicon, the cask installs the release's app into /Applications, where Lau
 Spotlight find it, and removes macOS's quarantine from it, as it is not notarized:
 
 ```sh
+brew trust makhnogk/remacs
 brew install --cask makhnogk/remacs/remacs
 ```
 
+Homebrew loads a third-party tap's casks and formulae only once it is trusted.
+
 The formula builds it instead, on macOS 15+ (from a bottle) and Linux (bottled for
-x86_64); it and the cask both link `remacs`, so install one of the two:
+x86_64); it and the cask both link `remacs`, so install one of the two, and name which
+one to uninstall (`brew uninstall --cask remacs` or `--formula`), as they share the name:
 
 ```sh
 brew install makhnogk/remacs/remacs
