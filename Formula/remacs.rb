@@ -82,7 +82,9 @@ class Remacs < Formula
     <<~EOS
       `remacs [path]` starts it from a terminal. To have Remacs in Launchpad and Spotlight,
       install the cask instead, which puts it in /Applications:
-        brew uninstall remacs && brew install --cask makhnogk/remacs/remacs
+        brew uninstall --formula remacs
+        brew trust --cask makhnogk/remacs/remacs
+        brew install --cask makhnogk/remacs/remacs
     EOS
   end
 
