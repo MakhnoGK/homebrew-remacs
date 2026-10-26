@@ -80,8 +80,9 @@ class Remacs < Formula
     end
 
     <<~EOS
-      `remacs [path]` starts it from a terminal. To have Remacs in Launchpad and Spotlight:
-        osascript -e 'tell application "Finder" to make alias file to posix file "#{opt_prefix}/Remacs.app" at posix file "/Applications" with properties {name:"Remacs.app"}'
+      `remacs [path]` starts it from a terminal. To have Remacs in Launchpad and Spotlight,
+      install the cask instead, which puts it in /Applications:
+        brew uninstall remacs && brew install --cask makhnogk/remacs/remacs
     EOS
   end
 
