@@ -1,8 +1,8 @@
 class Remacs < Formula
   desc "Emacs-inspired IDE, written in Rust"
   homepage "https://github.com/MakhnoGK/remacs"
-  url "https://github.com/MakhnoGK/remacs/releases/download/v0.1.0-alpha.3/remacs-0.1.0-alpha.3.tar.gz"
-  sha256 "9d855242541fb6aef2f316cb492f0e821e414f3650b063bb7842b97715ea7abe"
+  url "https://github.com/MakhnoGK/remacs/releases/download/v0.1.0-alpha.4/remacs-0.1.0-alpha.4.tar.gz"
+  sha256 "76a800be122738daea93614107396de7dfb67dd55f9943c62db31ad626a15ba1"
   # Apache-2.0 with the Commons Clause, which SPDX has no identifier for.
   license :cannot_represent
   head "https://github.com/MakhnoGK/remacs.git", branch: "dev"
