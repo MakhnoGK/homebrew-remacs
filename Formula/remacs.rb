@@ -13,9 +13,9 @@ class Remacs < Formula
   end
 
   bottle do
-    root_url "https://github.com/MakhnoGK/homebrew-remacs/releases/download/remacs-0.1.0-alpha.3"
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "81e5747f68e0162b06f047ee20c239d5cfac3e6f44da776fc9c1190cd46fb121"
-    sha256 cellar: :any,                 x86_64_linux:  "7c9dfc8e333408ee9032ac25534aa8dc4908fed88ff7212297f520441b3397d9"
+    root_url "https://github.com/MakhnoGK/homebrew-remacs/releases/download/remacs-0.1.0-alpha.4"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4b0c839dc2e0f604eed3bef247cf831124860858a670375df867e734387b0a2d"
+    sha256 cellar: :any,                 x86_64_linux:  "e000ac9681f9783ed1dc309e599a8377e4231ec1ac672da8c4b198f9b843e524"
   end
 
   depends_on "cargo-about" => :build
