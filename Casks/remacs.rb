@@ -1,6 +1,6 @@
 cask "remacs" do
-  version "0.1.0-alpha.3"
-  sha256 "9c21c53a28f3b9f3a71484d6ac31150f335862eef31120085e29a5d5400239a1"
+  version "0.1.0-alpha.4"
+  sha256 "c99eb2e5d7d7fde77478609844561f28f461e0a5d13de50bb71d1bb5c2ebdd1b"
 
   url "https://github.com/MakhnoGK/remacs/releases/download/v#{version}/remacs-#{version}-arm64-macos.zip"
   name "Remacs"
